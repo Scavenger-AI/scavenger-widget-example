@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# widget bundle (built artifact — served from CDN in production)
+/public/scavenger-chat-anonymous.js
