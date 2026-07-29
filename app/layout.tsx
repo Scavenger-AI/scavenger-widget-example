@@ -6,14 +6,16 @@ export const metadata: Metadata = {
   title: "EUIPO Assistant",
 };
 
+const WIDGET_SRC =
+  process.env.NEXT_PUBLIC_WIDGET_SRC ??
+  "https://d2ti5h8dzkdk09.cloudfront.net/scavenger-chat-anonymous.js";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
         {children}
-        {/* Registers <scavenger-chat-anonymous> custom element.
-            In production swap this src for the CDN URL. */}
-        <Script src="/scavenger-chat-anonymous.js" strategy="afterInteractive" />
+        <Script src={WIDGET_SRC} strategy="afterInteractive" />
       </body>
     </html>
   );

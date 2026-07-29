@@ -14,6 +14,7 @@ declare module "react" {
         "accent-color"?: string;
         "border-radius"?: string;
         "font-family"?: string;
+        "max-width"?: string;
       };
     }
   }
