@@ -207,7 +207,7 @@ The widget fills 100% of its container by default. Use inline `style` and option
 
 ## Session persistence
 
-Each visitor's session is stored in `localStorage` keyed by their client ID. On reload, the same backend project and full conversation history are restored automatically. Sessions older than 24 hours are discarded and a fresh session starts.
+Each visitor's session is stored in `sessionStorage` keyed by their client ID. On reload, the same backend project and full conversation history are restored automatically. Sessions older than 24 hours are discarded and a fresh session starts. Closing the browser tab clears the session — this is intentional to reduce token exposure window.
 
 ---
 
@@ -233,5 +233,5 @@ Requires a running Scavenger backend and a registered `client-id` with your app'
 | Widget shows "Initialising…" forever | `NEXT_PUBLIC_WIDGET_CLIENT_ID` missing | Check env vars; redeploy or restart dev server |
 | `Uncaught SyntaxError: Unexpected token 'export'` | Script imported via bundler | Use `next/script` with `strategy="afterInteractive"` |
 | WebSocket closes immediately | Wrong `ws-base-url` scheme | Value must start with `wss://` (or `ws://` for local) |
-| Conversation lost after reload | `localStorage` cleared or private browsing | Expected — private/incognito sessions don't persist |
+| Conversation lost after closing tab | `sessionStorage` cleared on tab close | Expected — sessions are tab-scoped for security |
 | `401` on token refresh | Token from old backend version in localStorage | Clear localStorage and reload for a fresh session |

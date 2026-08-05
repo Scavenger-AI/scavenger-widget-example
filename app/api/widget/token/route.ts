@@ -7,6 +7,12 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
+  // Whitelist allowed fields to prevent injection of unexpected properties
+  const { client_id } = body;
+  if (typeof client_id !== "string" || !client_id) {
+    return NextResponse.json({ error: "client_id required" }, { status: 400 });
+  }
+
   const backendUrl = process.env.SCAVENGER_API_URL;
   if (!backendUrl) {
     return NextResponse.json(
@@ -23,7 +29,7 @@ export async function POST(req: NextRequest) {
       "Content-Type": "application/json",
       Origin: origin,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ client_id }),
   });
 
   const data = await res.json();
