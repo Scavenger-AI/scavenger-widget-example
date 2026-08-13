@@ -108,12 +108,12 @@ No changes needed — they read `SCAVENGER_API_URL` and `WIDGET_ORIGIN` from env
 
 ## Step 4 — Set environment variables
 
-Copy `.env.local.example` to `.env.local` and fill in your values:
+Create `.env.local` in the project root and fill in your values:
 
 ```ini
 # Server-side only — never sent to the browser
 SCAVENGER_API_URL=https://api.your-scavenger-instance.com
-WIDGET_ORIGIN=https://your-app.com
+WIDGET_ORIGIN=https://your-app.com   # use http://localhost:3001 for local dev
 
 # Browser-safe — passed to the widget element
 NEXT_PUBLIC_WIDGET_CLIENT_ID=your-client-id
@@ -121,6 +121,8 @@ NEXT_PUBLIC_WS_BASE_URL=wss://api.your-scavenger-instance.com
 ```
 
 For Vercel: add all four in **Project → Settings → Environment Variables**.
+
+> **Note:** Restart the development server after editing `.env.local`.
 
 | Variable | Where it's used | Exposed to browser? |
 |---|---|---|
@@ -218,7 +220,7 @@ cp .env.local.example .env.local
 # edit .env.local with your values
 npm install
 npm run dev
-# open http://localhost:3000
+# open http://localhost:3001
 ```
 
 Requires a running Scavenger backend and a registered `client-id` with your app's origin in its allowlist.
@@ -230,8 +232,9 @@ Requires a running Scavenger backend and a registered `client-id` with your app'
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | Token request returns `403` | App origin not in client's allowlist | Add `WIDGET_ORIGIN` value in Scavenger admin for this client ID |
-| Widget shows "Initialising…" forever | `NEXT_PUBLIC_WIDGET_CLIENT_ID` missing | Check env vars; redeploy or restart dev server |
+| Widget shows "Initialising…" forever | `NEXT_PUBLIC_WIDGET_CLIENT_ID` missing | Check env vars; restart dev server or redeploy |
 | `Uncaught SyntaxError: Unexpected token 'export'` | Script imported via bundler | Use `next/script` with `strategy="afterInteractive"` |
 | WebSocket closes immediately | Wrong `ws-base-url` scheme | Value must start with `wss://` (or `ws://` for local) |
+| "Connection error. Please try again." banner appears briefly | Transient WebSocket reconnect during streaming | Expected; the response is still delivered and the banner clears automatically |
 | Conversation lost after closing tab | `sessionStorage` cleared on tab close | Expected — sessions are tab-scoped for security |
 | `401` on token refresh | Token from old backend version in localStorage | Clear localStorage and reload for a fresh session |
